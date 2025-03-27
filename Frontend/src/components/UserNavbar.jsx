@@ -19,7 +19,9 @@ const UserNavbar = () => {
   const handleLogout = () => {
     try {
       const response = axiosInstance.post("/user/logout");
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 100);
     } catch (error) {
       console.error(
         "Logout failed:",
