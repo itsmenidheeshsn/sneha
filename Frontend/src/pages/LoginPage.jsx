@@ -20,8 +20,9 @@ export default function LoginPage() {
         password,
       });
 
-      // Redirect to home page
-      navigate("/home");
+      setTimeout(() => {
+        navigate("/home");
+      }, 100);
     } catch (err) {
       setError(err.response?.data?.message || "Invalid email or password");
     } finally {

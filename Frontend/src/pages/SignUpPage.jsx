@@ -23,7 +23,9 @@ export default function SignupPage() {
         phone,
         password,
       });
-      navigate("/home"); // Redirect to login after successful signup
+      setTimeout(() => {
+        navigate("/home");
+      }, 100);
     } catch (err) {
       setError(
         err.response?.data?.message || "Registration failed. Please try again."
