@@ -18,14 +18,11 @@ const UserLayout = () => {
         url: "/check/user",
       });
       dispatch(saveUserData());
-      console.log("check user response ----", response);
     } catch (error) {
       console.error(error);
       dispatch(clearUserdata());
     }
   };
-  console.log(isUserAuth, "isUserAuth");
-  console.log(userData, "userData");
   useEffect(() => {
     checkUser();
   }, [location.pathname]);
