@@ -14,7 +14,7 @@ const Navbar = () => {
       <nav className="top-0 left-0 w-full h-20 bg-gray-800 flex justify-between p-5 items-center z-50">
         <div className="mr-5">
           <Link to={"/"}>
-            <img src="/logo.png" alt="logo" />
+            <img src="/logo.png" alt="logo" className=" lg:h-[50px] h-[30px]" />
           </Link>
         </div>
 

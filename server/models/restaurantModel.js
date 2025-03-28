@@ -8,6 +8,7 @@ const menuItemSchema = new Schema({
   description: { type: String },
   image: { type: String },
   category: { type: String },
+  isAvailable: { type: Boolean, default: true },
 });
 
 const restaurantSchema = new Schema({

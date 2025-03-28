@@ -9,6 +9,8 @@ import AboutPage from "../pages/AboutPage";
 import ProtectRoutes from "./ProtectRoutes";
 import ProfilePage from "../pages/ProfilePage";
 import ContactPage from "../pages/ContactPage";
+import RestaurantPage from "../pages/RestaurantPage";
+
 const Router = createBrowserRouter([
   {
     path: "/",
@@ -25,6 +27,7 @@ const Router = createBrowserRouter([
           { path: "about", element: <AboutPage /> },
           { path: "profile", element: <ProfilePage /> },
           { path: "contact", element: <ContactPage /> },
+          { path: "restaurant", element: <RestaurantPage /> },
         ],
       },
     ],

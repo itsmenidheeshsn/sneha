@@ -4,7 +4,7 @@ import { Restaurant } from "../models/restaurantModel.js";
 export const addMenuItem = async (req, res) => {
   try {
     const restaurantId = req.restaurant.id;
-    const { name, price, description, category } = req.body;
+    const { name, price, description, category, isAvailable } = req.body;
     const restaurant = await Restaurant.findById(restaurantId);
     if (!restaurant) {
       return res.status(404).json({ message: "Restaurant Not Found" });
@@ -25,6 +25,7 @@ export const addMenuItem = async (req, res) => {
       description,
       image: imageUri.url,
       category,
+      isAvailable,
     };
     restaurant.menu.push(newMenuItem);
     await restaurant.save();
@@ -39,8 +40,8 @@ export const addMenuItem = async (req, res) => {
 
 export async function updateMenu(req, res) {
   try {
-    const { restaurantId } = req.params;
-    const { name, price, description, image, category } = req.body;
+    const restaurantId = req.restaurant.id;
+    const { name, price, description, image, category, isAvailable } = req.body;
     const restaurant = await Restaurant.findById(restaurantId);
     if (!restaurant) {
       return res.status(404).json({ message: "Restaurant Not Found" });
@@ -54,6 +55,7 @@ export async function updateMenu(req, res) {
     if (price) menuItem.price = price;
     if (description) menuItem.description = description;
     if (category) menuItem.category = category;
+    if (isAvailable !== undefined) menuItem.isAvailable = isAvailable;
     if (req.file) {
       if (menuItem.image) {
         const imagePublicId = menuItem.image.split("/").pop().split(".")[0];

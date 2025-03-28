@@ -45,7 +45,7 @@ const UserNavbar = () => {
       <nav className="top-0 left-0 w-full h-20 bg-gray-800 flex justify-between p-5 items-center z-50">
         <div className="mr-5">
           <Link to="/home">
-            <img src="/logo.png" alt="logo" />
+            <img src="/logo.png" alt="logo" className=" lg:h-[50px] h-[30px]" />
           </Link>
         </div>
 
@@ -58,9 +58,7 @@ const UserNavbar = () => {
             <li className="text-md font-semibold cursor-pointer hover:text-amber-300">
               <Link to="/about">About</Link>
             </li>
-            <li className="text-md font-semibold cursor-pointer hover:text-amber-300">
-              <Link to="/menu">Menu</Link>
-            </li>
+
             <li className="text-md font-semibold cursor-pointer hover:text-amber-300">
               <Link to="/contact">Contact</Link>
             </li>
@@ -157,13 +155,7 @@ const UserNavbar = () => {
           >
             About
           </Link>
-          <Link
-            to="/menu"
-            className="text-white hover:bg-gray-700 px-4 py-2 rounded-lg"
-            onClick={toggleMobileMenu}
-          >
-            Menu
-          </Link>
+
           <Link
             to="/contact"
             className="text-white hover:bg-gray-700 px-4 py-2 rounded-lg"

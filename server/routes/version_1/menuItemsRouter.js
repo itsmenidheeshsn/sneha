@@ -18,7 +18,7 @@ router.post(
   addMenuItem
 );
 router.put(
-  "/update/:restaurantId/menu/:menuItemId",
+  "/update/menu/:menuItemId",
   restaurantMiddleware,
   upload.single("image"),
   updateMenu
