@@ -17,12 +17,11 @@ export default function LandPage() {
                 minutes.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <a
-                  href="#"
-                  className="px-6 py-3 bg-amber-300 text-gray-800 font-bold rounded-full hover:bg-amber-400 transition duration-200 text-center"
-                >
-                  Order Now
-                </a>
+                <Link to={"/home"}>
+                  <button className="px-6 py-3 bg-amber-300 text-gray-800 font-bold rounded-full hover:bg-amber-400 transition duration-200 text-center">
+                    Order Now
+                  </button>
+                </Link>
                 <a
                   href="#"
                   className="px-6 py-3 border-2 border-amber-300 text-amber-300 font-bold rounded-full hover:bg-amber-300 hover:text-gray-800 transition duration-200 text-center"
