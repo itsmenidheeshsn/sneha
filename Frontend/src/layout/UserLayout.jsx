@@ -10,7 +10,6 @@ const UserLayout = () => {
   const { isUserAuth, userData } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const location = useLocation();
-  console.log(location.pathname, "........pathname");
   const checkUser = async () => {
     try {
       const response = await axiosInstance({

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosInstance";
-
+import { toast } from "react-hot-toast";
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,9 +23,10 @@ export default function SignupPage() {
         phone,
         password,
       });
+      toast.success(response?.data?.message || "signup success");
       setTimeout(() => {
         navigate("/home");
-      }, 100);
+      }, 1000);
     } catch (err) {
       setError(
         err.response?.data?.message || "Registration failed. Please try again."

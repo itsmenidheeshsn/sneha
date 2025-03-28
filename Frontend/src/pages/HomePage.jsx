@@ -1,11 +1,15 @@
 import React, { useState } from "react";
+import useFetch from "../hooks/useFetch";
+import RestaurantList from "../components/RestaurantList";
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const username = "John"; // Replace with dynamic user data (e.g., from auth)
 
-  // Mock search suggestions (replace with API calls)
+  const [profile, isLoading, error] = useFetch("/user/profile");
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
   const handleSearch = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
@@ -31,7 +35,7 @@ const HomePage = () => {
         {/* Welcome Message */}
         <div className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-3">
-            Welcome back, <span className="text-amber-400">{username}</span>!
+            Welcome <span className="text-amber-400">{profile.user.name}</span>
           </h1>
           <p className="text-gray-300 text-lg">
             What would you like to order today?
@@ -90,29 +94,9 @@ const HomePage = () => {
         {/* Featured Items (Optional) */}
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-6 text-amber-400">
-            Popular Items
+            Restaurants
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {["Pizza", "Burger", "Pasta"].map((item, index) => (
-              <div
-                key={index}
-                className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition"
-              >
-                <div className="h-48 bg-gray-700 flex items-center justify-center">
-                  <span className="text-gray-400">Image</span>
-                </div>
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold">{item}</h3>
-                  <p className="text-gray-400 mt-2">
-                    Delicious {item.toLowerCase()}!
-                  </p>
-                  <button className="mt-4 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition">
-                    Order Now
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          <RestaurantList />
         </div>
       </div>
     </div>

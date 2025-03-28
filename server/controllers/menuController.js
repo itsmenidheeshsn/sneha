@@ -3,7 +3,7 @@ import { Restaurant } from "../models/restaurantModel.js";
 
 export const addMenuItem = async (req, res) => {
   try {
-    const { restaurantId } = req.params;
+    const restaurantId = req.restaurant.id;
     const { name, price, description, category } = req.body;
     const restaurant = await Restaurant.findById(restaurantId);
     if (!restaurant) {
@@ -119,20 +119,21 @@ export const getMenuItemById = async (req, res) => {
       return res.status(404).json({ message: "Restaurant not found" });
     }
     const menuItem = restaurant?.menu.id(menuItemId);
-    console.log(menuItem)
+    console.log(menuItem);
     if (!menuItem) {
       return res.status(404).json({ message: "Menu item not found" });
     }
     res.status(200).json({ menuItem });
   } catch (error) {
-    console.log(error);                                                
+    console.log(error);
     res.status(500).json({ message: "Server error", error });
   }
 };
 
 export const deleteMenuItem = async (req, res) => {
   try {
-    const { restaurantId, menuItemId } = req.params;
+    const restaurantId = req.restaurant.id;
+    const { menuItemId } = req.params;
     const restaurant = await Restaurant.findById(restaurantId);
     if (!restaurant) {
       return res.status(404).json({ message: "Restaurant not found" });
@@ -144,7 +145,7 @@ export const deleteMenuItem = async (req, res) => {
     await Restaurant.findByIdAndUpdate(
       restaurantId,
       {
-        $pull: { menu: { _id: menuItemId } }
+        $pull: { menu: { _id: menuItemId } },
       },
       { new: true }
     );

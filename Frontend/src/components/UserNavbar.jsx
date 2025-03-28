@@ -2,26 +2,36 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosInstance";
+import { toast } from "react-hot-toast";
 import {
   FiUser,
   FiShoppingCart,
   FiChevronDown,
   FiChevronUp,
+  FiMenu,
+  FiX,
 } from "react-icons/fi";
 
 const UserNavbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const toggleProfileMenu = () => {
     setIsProfileOpen(!isProfileOpen);
   };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   const handleLogout = () => {
     try {
       const response = axiosInstance.post("/user/logout");
+      toast.success(response?.data?.message || "Logout success");
       setTimeout(() => {
         navigate("/");
-      }, 100);
+      }, 1000);
     } catch (error) {
       console.error(
         "Logout failed:",
@@ -32,10 +42,14 @@ const UserNavbar = () => {
 
   return (
     <div>
-      <nav className="top-0 left-0 w-full h-20 bg-gray-800  flex justify-between p-5 items-center z-50">
+      <nav className="top-0 left-0 w-full h-20 bg-gray-800 flex justify-between p-5 items-center z-50">
         <div className="mr-5">
-          <img src="/logo.png" alt="logo" />
+          <Link to="/home">
+            <img src="/logo.png" alt="logo" />
+          </Link>
         </div>
+
+        {/* Desktop Navigation */}
         <div className="hidden lg:flex gap-20 justify-between items-center">
           <ul className="flex gap-8 text-white">
             <li className="text-md font-semibold cursor-pointer hover:text-amber-300">
@@ -52,7 +66,9 @@ const UserNavbar = () => {
             </li>
           </ul>
         </div>
-        <div className="flex items-center gap-5">
+
+        {/* Desktop User Controls */}
+        <div className="hidden lg:flex items-center gap-5">
           <div className="flex items-center gap-5 text-white">
             <Link to="/cart" className="relative group">
               <FiShoppingCart className="text-2xl cursor-pointer hover:text-amber-300" />
@@ -94,7 +110,6 @@ const UserNavbar = () => {
                         className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                         onClick={() => {
                           handleLogout();
-                          console.log("Signing out...");
                           setIsProfileOpen(false);
                         }}
                       >
@@ -107,7 +122,84 @@ const UserNavbar = () => {
             </div>
           </div>
         </div>
+
+        {/* Mobile Hamburger Menu Button */}
+        <div className="lg:hidden flex items-center gap-4">
+          <Link to="/cart" className="relative group">
+            <FiShoppingCart className="text-2xl text-white cursor-pointer hover:text-amber-300" />
+            <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+              0
+            </span>
+          </Link>
+          <button
+            onClick={toggleMobileMenu}
+            className="text-white text-2xl focus:outline-none"
+          >
+            {isMobileMenuOpen ? <FiX /> : <FiMenu />}
+          </button>
+        </div>
       </nav>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden bg-gray-800 w-full px-5 pb-5 flex flex-col gap-4 z-40">
+          <Link
+            to="/home"
+            className="text-white hover:bg-gray-700 px-4 py-2 rounded-lg"
+            onClick={toggleMobileMenu}
+          >
+            Home
+          </Link>
+          <Link
+            to="/about"
+            className="text-white hover:bg-gray-700 px-4 py-2 rounded-lg"
+            onClick={toggleMobileMenu}
+          >
+            About
+          </Link>
+          <Link
+            to="/menu"
+            className="text-white hover:bg-gray-700 px-4 py-2 rounded-lg"
+            onClick={toggleMobileMenu}
+          >
+            Menu
+          </Link>
+          <Link
+            to="/contact"
+            className="text-white hover:bg-gray-700 px-4 py-2 rounded-lg"
+            onClick={toggleMobileMenu}
+          >
+            Contact
+          </Link>
+
+          {/* Mobile Profile Options */}
+          <div className="border-t border-gray-700 pt-4 mt-2">
+            <Link
+              to="/profile"
+              className="block text-white hover:bg-gray-700 px-4 py-2 rounded-lg"
+              onClick={toggleMobileMenu}
+            >
+              Profile
+            </Link>
+            <Link
+              to="/orders"
+              className="block text-white hover:bg-gray-700 px-4 py-2 rounded-lg"
+              onClick={toggleMobileMenu}
+            >
+              Orders
+            </Link>
+            <button
+              className="block w-full text-left text-white hover:bg-gray-700 px-4 py-2 rounded-lg"
+              onClick={() => {
+                handleLogout();
+                toggleMobileMenu();
+              }}
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

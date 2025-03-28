@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosInstance";
-
+import { toast } from "react-hot-toast";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,9 +20,10 @@ export default function LoginPage() {
         password,
       });
 
+      toast.success(response?.data?.message || "Login success");
       setTimeout(() => {
         navigate("/home");
-      }, 100);
+      }, 1000);
     } catch (err) {
       setError(err.response?.data?.message || "Invalid email or password");
     } finally {

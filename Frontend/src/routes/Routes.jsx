@@ -7,6 +7,8 @@ import ErrorPage from "../pages/ErrorPage";
 import SignUp from "../pages/SignUpPage";
 import AboutPage from "../pages/AboutPage";
 import ProtectRoutes from "./ProtectRoutes";
+import ProfilePage from "../pages/ProfilePage";
+import ContactPage from "../pages/ContactPage";
 const Router = createBrowserRouter([
   {
     path: "/",
@@ -21,6 +23,8 @@ const Router = createBrowserRouter([
         children: [
           { path: "home", element: <HomePage /> },
           { path: "about", element: <AboutPage /> },
+          { path: "profile", element: <ProfilePage /> },
+          { path: "contact", element: <ContactPage /> },
         ],
       },
     ],
