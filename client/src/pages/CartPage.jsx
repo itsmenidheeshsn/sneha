@@ -56,6 +56,7 @@ const CartPage = () => {
       console.error("Cart ID not found");
     }
   };
+
   // Navigate to /cart when the cart is empty
   useEffect(() => {
     if (isEmptyCart) {
@@ -186,27 +187,29 @@ const CartPage = () => {
         ))}
       </div>
 
-      <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-xs sticky bottom-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="text-gray-600">Subtotal</p>
-            <p className="text-xl font-bold text-gray-900">
-              ₹{cart.totalPrice}
-            </p>
-            {cart.discount > 0 && (
-              <p className="text-sm text-green-600">
-                You saved ₹{cart.discount}
+      {!isEmptyCart && (
+        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-xs sticky bottom-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-gray-600">Subtotal</p>
+              <p className="text-xl font-bold text-gray-900">
+                ₹{cart.totalPrice}
               </p>
-            )}
+              {cart.discount > 0 && (
+                <p className="text-sm text-green-600">
+                  You saved ₹{cart.discount}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={handleCheckout}
+              className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-3 rounded-lg font-medium transition-colors"
+            >
+              Checkout Now
+            </button>
           </div>
-          <button
-            onClick={handleCheckout}
-            className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-3 rounded-lg font-medium transition-colors"
-          >
-            Checkout Now
-          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 };

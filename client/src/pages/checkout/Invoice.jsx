@@ -12,76 +12,90 @@ function Invoice() {
   const orderData = order?.order;
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="text-center text-white">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error loading order data: {error.message}</div>;
+    return (
+      <div className="text-center text-red-400">
+        Error loading order data: {error.message}
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Invoice</h1>
+    <div className="w-full p-4 bg-gray-800 text-white border border-gray-700">
+      <h1 className="text-3xl font-bold text-center mb-6 text-amber-300">
+        Order Invoice
+      </h1>
 
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold">Invoice Details</h2>
-        <p>
-          <strong>Invoice Number:</strong> {orderData._id}
-        </p>
-        <p>
-          <strong>Date:</strong>{" "}
-          {new Date(orderData.createdAt).toLocaleDateString()}
+      <div className="mb-6 p-4 bg-gray-700 rounded-lg border border-gray-600">
+        <h2 className="text-xl font-semibold mb-3 text-amber-300">
+          Invoice Details
+        </h2>
+        <div className="space-y-2 text-gray-300">
+          <p>
+            <span className="font-medium">Invoice Number:</span> {orderData._id}
+          </p>
+          <p>
+            <span className="font-medium">Date:</span>{" "}
+            {new Date(orderData.createdAt).toLocaleDateString()}
+          </p>
+        </div>
+      </div>
+
+      <div className="mb-6 p-4 bg-gray-700 rounded-lg border border-gray-600">
+        <h2 className="text-xl font-semibold mb-3 text-amber-300">
+          Customer Details
+        </h2>
+        <div className="space-y-2 text-gray-300">
+          <p>
+            <span className="font-medium">Name:</span> {orderData.user.name}
+          </p>
+          <p>
+            <span className="font-medium">Email:</span> {orderData.user.email}
+          </p>
+          <p>
+            <span className="font-medium">Address:</span>{" "}
+            {`${orderData.deliveryAddress.street}, ${orderData.deliveryAddress.city}, ${orderData.deliveryAddress.state}`}
+          </p>
+        </div>
+      </div>
+
+      <div className="mb-6 p-4 bg-gray-700 rounded-lg border border-gray-600">
+        <h2 className="text-xl font-semibold mb-3 text-amber-300">
+          Restaurant Details
+        </h2>
+        <p className="text-gray-300">
+          <span className="font-medium">Name:</span> {orderData.restaurant.name}
         </p>
       </div>
 
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold">Customer Details</h2>
-        <p>
-          <strong>Name:</strong> {orderData.user.name}
-        </p>
-        <p>
-          <strong>Email:</strong> {orderData.user.email}
-        </p>
-        <p>
-          <strong>Address:</strong>{" "}
-          {`${orderData.deliveryAddress.street}, ${orderData.deliveryAddress.city}, ${orderData.deliveryAddress.state}`}
-        </p>
-      </div>
-
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold">Restaurant Details</h2>
-        <p>
-          <strong>Name:</strong> {orderData.restaurant.name}
-        </p>
-      </div>
-
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold">Items</h2>
+      <div className="mb-6 p-4 bg-gray-700 rounded-lg border border-gray-600">
+        <h2 className="text-xl font-semibold mb-3 text-amber-300">
+          Order Items
+        </h2>
         <div className="overflow-x-auto">
-          <table className="min-w-full table-auto border-collapse border border-gray-300">
+          <table className="w-full table-auto border-collapse">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 px-4 py-2">
-                  Description
-                </th>
-                <th className="border border-gray-300 px-4 py-2">Quantity</th>
-                <th className="border border-gray-300 px-4 py-2">Price</th>
-                <th className="border border-gray-300 px-4 py-2">Total</th>
+              <tr className="bg-gray-600">
+                <th className="px-4 py-2 text-left">Description</th>
+                <th className="px-4 py-2 text-left">Quantity</th>
+                <th className="px-4 py-2 text-left">Price</th>
+                <th className="px-4 py-2 text-left">Total</th>
               </tr>
             </thead>
             <tbody>
               {orderData.cartId.items.map((item) => (
-                <tr key={item._id}>
-                  <td className="border border-gray-300 px-4 py-2">
+                <tr key={item._id} className="border-b border-gray-600">
+                  <td className="px-4 py-2 text-gray-300">
                     {item.foodId.name}
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {item.quantity}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="px-4 py-2 text-gray-300">{item.quantity}</td>
+                  <td className="px-4 py-2 text-gray-300">
                     ₹{(item.totalItemPrice / item.quantity).toFixed(2)}
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="px-4 py-2 text-gray-300">
                     ₹{item.totalItemPrice.toFixed(2)}
                   </td>
                 </tr>
@@ -91,23 +105,24 @@ function Invoice() {
         </div>
       </div>
 
-      <div className="text-right mt-6">
-        <div className="flex gap-2 justify-end">
-          <p>Coupon Discount :</p>
-          {discount && <p>{discount}</p>}
-        </div>
-        <h2 className="text-xl font-semibold">
+      <div className="text-right mt-6 p-4 bg-gray-700 rounded-lg border border-gray-600">
+        {discount && (
+          <div className="flex gap-2 justify-end text-green-400 mb-2">
+            <p>Coupon Discount:</p>
+            <p>- ₹{discount}</p>
+          </div>
+        )}
+        <h2 className="text-xl font-semibold text-amber-300">
           Total: ₹{orderData.finalPrice.toFixed(2)}
         </h2>
       </div>
 
-      {/* Home Button */}
-      <div className="mb-4">
+      <div className="mt-6 flex justify-center">
         <button
           onClick={() => navigate("/")}
-          className="bg-teal-800 text-white px-4 py-2 rounded hover:bg-teal-700"
+          className="bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600 transition-colors"
         >
-          Continue Order
+          Continue Ordering
         </button>
       </div>
     </div>
