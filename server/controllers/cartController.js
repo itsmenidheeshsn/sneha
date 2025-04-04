@@ -3,7 +3,7 @@ import { Restaurant } from "../models/restaurantModel.js";
 
 export async function addToCart(req, res) {
   try {
-    const userId = req.user.id;
+    const user = req.user.id;
     const { foodId, restaurantId, quantity } = req.body;
     const restaurant = await Restaurant.findById(restaurantId);
     if (!restaurant) {
@@ -14,7 +14,10 @@ export async function addToCart(req, res) {
       return res.status(404).json({ message: "Menu item not found" });
     }
     const itemPrice = menuItem.price * quantity;
-    let cart = await Cart.findOne({ userId, cartStatus: { $ne: "ordered" } });
+    let cart = await Cart.findOne({
+      userId: user,
+      cartStatus: { $ne: "ordered" },
+    });
     if (cart && cart.restaurantId.toString() !== restaurantId) {
       return res.status(409).json({
         message: "Item from different restaurant is already added to cart",
@@ -22,7 +25,7 @@ export async function addToCart(req, res) {
     }
     if (!cart) {
       cart = new Cart({
-        userId,
+        userId: user,
         restaurantId,
         items: [],
         totalPrice: 0,

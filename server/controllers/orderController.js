@@ -1,6 +1,7 @@
+import { Cart } from "../models/cartModel.js";
 import { Coupon } from "../models/couponModel.js";
 import { Order } from "../models/orderModel.js";
-
+import { Restaurant } from "../models/restaurantModel.js";
 const ORDER_STATUS = [
   "pending",
   "confirmed",
@@ -15,14 +16,23 @@ export const createOrder = async (req, res) => {
     const user = req.user.id;
     const { restaurant, cartId, coupon, deliveryAddress } = req.body;
     const findCoupon = coupon ? await Coupon.findOne({ code: coupon }) : null;
+    const cart = await Cart.findOne({ userId: user });
+    const findRestaurant = await Restaurant.findById(restaurant);
+    console.log(findRestaurant);
+    if (!cart) {
+      return res.status(400).json({ message: "Cart not found for the user" });
+    }
 
     const order = new Order({
       user,
       restaurant,
+      restaurantName: findRestaurant.name,
       cartId,
       coupon: findCoupon?._id || null,
       deliveryAddress,
+      foodDetails: [...cart.items],
     });
+
     await order.save();
     res.status(201).json({ message: "Order created successfully", order });
   } catch (error) {

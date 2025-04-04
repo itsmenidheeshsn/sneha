@@ -12,6 +12,11 @@ import ContactPage from "../pages/ContactPage";
 
 import RestaurantPage from "../pages/RestaurantPage";
 import CartPage from "../pages/CartPage";
+import CheckoutPage from "../pages/checkout/CheckoutPage";
+
+import OrderDetails from "../pages/OrderDetails";
+import PaymentPage from "../pages/PaymentPage";
+import Invoice from "../pages/checkout/Invoice";
 
 const Router = createBrowserRouter([
   {
@@ -31,6 +36,13 @@ const Router = createBrowserRouter([
           { path: "contact", element: <ContactPage /> },
           { path: "restaurant/:id", element: <RestaurantPage /> },
           { path: "cart", element: <CartPage /> },
+          { path: "checkout", element: <CheckoutPage /> },
+          { path: "orders", element: <OrderDetails /> },
+          { path: "payment", element: <PaymentPage /> },
+          {
+            path: "invoice/:orderId",
+            element: <Invoice />,
+          },
         ],
       },
     ],

@@ -43,7 +43,7 @@ export const createPayment = async (req, res) => {
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
       notes: {
-        orderId: orderId.toString(), 
+        orderId: orderId.toString(),
         userId: user.toString(),
       },
     });

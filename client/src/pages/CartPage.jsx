@@ -1,23 +1,32 @@
-import React from "react";
-import { FiShoppingCart, FiChevronLeft, FiPlus } from "react-icons/fi";
+import React, { useEffect } from "react";
+import { FiShoppingCart, FiPlus } from "react-icons/fi";
 import { HiOutlineMinusSm, HiOutlinePlusSm } from "react-icons/hi";
 import { FiTrash2 } from "react-icons/fi";
 import toast from "react-hot-toast";
 import useFetch from "../hooks/useFetch";
 import axiosInstance from "../config/axiosInstance";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const [cartData, isLoading, error, fetchCart] = useFetch("/cart/all");
 
-  // Calculate cart and isEmptyCart based on the latest data
+  // Ensure cart data is available
   const cart = cartData?.data || { items: [], totalPrice: 0, finalPrice: 0 };
   const isEmptyCart = cart.items.length === 0 && !isLoading && !error;
 
   const removeItemFromCart = async (itemId) => {
     try {
       await axiosInstance.delete(`/cart/remove/${itemId}`);
-      await fetchCart(); // Wait for the cart to update
+      await fetchCart(); // Fetch updated cart data
+      console.log(cart);
+      setTimeout(() => {
+        if (cart.items.length === 1) {
+          // If only one item was in cart before removal
+          navigate("/home"); // Redirect user when cart becomes empty
+        }
+      }, 100);
+
       toast.success("Item removed from cart");
     } catch (err) {
       toast.error("Failed to remove item");
@@ -27,14 +36,33 @@ const CartPage = () => {
   const updateQuantity = async (foodId, action) => {
     try {
       await axiosInstance.put("/cart/update", { foodId, action });
-      await fetchCart(); // Wait for the cart to update
+      await fetchCart(); // Fetch updated cart after changing quantity
       toast.success("Cart updated");
     } catch (err) {
       toast.error("Failed to update quantity");
     }
   };
 
-  // Rest of your component remains the same...
+  const handleCheckout = () => {
+    if (isEmptyCart) {
+      toast.error("Your cart is empty");
+      return;
+    }
+
+    if (cart._id) {
+      navigate("/checkout", { state: { cart, cartId: cart._id } }); // ✅ Pass entire cart
+    } else {
+      toast.error("Unable to proceed to checkout");
+      console.error("Cart ID not found");
+    }
+  };
+  // Navigate to /cart when the cart is empty
+  useEffect(() => {
+    if (isEmptyCart) {
+      navigate("/cart");
+    }
+  }, [isEmptyCart, navigate]);
+
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh]">
@@ -172,7 +200,7 @@ const CartPage = () => {
             )}
           </div>
           <button
-            onClick={() => alert("Proceeding to checkout")}
+            onClick={handleCheckout}
             className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-3 rounded-lg font-medium transition-colors"
           >
             Checkout Now
